@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'CSS/style.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'CSS/main_visual.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'CSS/button.css' %}">
+    <script src="{% static 'JS/region.js' %}"></script>
+    <script src="{% static 'JS/mainv.js' %}"></script>
+   
+    <style>
+        div#ww_378b721c8d0cd{
+            position: relative;
+            bottom : 43px ;
+            
+        }
+        .more-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            margin: 10px;
+            background-color: #898484;
+            color: #232222;
+            border: none;
+            padding: 5px;
+            cursor: pointer;
+            border-radius: 50%;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 25px;
+            height: 25px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div id="ww_378b721c8d0cd" v='1.3' loc='id' a='{"t":"ticker","lang":"ko","sl_lpl":1,"ids":[],"font":"Times","sl_ics":"one","sl_sot":"celsius","cl_bkg":"#616161","cl_font":"#FFFFFF","cl_cloud":"#FFFFFF","cl_persp":"#81D4FA","cl_sun":"rgba(200,180,118,1)","cl_moon":"#FFC107","cl_thund":"#FF5722"}'>More forecasts: <a href="https://oneweather.org/seoul/30_days/" id="ww_378b721c8d0cd_u" target="_blank">Seoul 30 day forecast</a></div><script async src="https://app3.weatherwidget.org/js/?id=ww_378b721c8d0cd"></script>
+    {% include 'menu.html' %}
+    <section class="main-visual" style="position: absolute; top: 160px; left: 100px; width: 42%; margin: 20px, 0; padding: 0; display:flex; vertical-align: top;">
+        <div class="slider">
+            <div class="slide">1</div>
+            <div class="slide">2</div>
+            <div class="slide">3</div>
+            <div class="slide">4</div>
+            <div class="slide">5</div>
+        </div>
+        <div class="controls">
+            <button class="control-btn prev">&#10094;</button>
+            <button class="control-btn next">&#10095;</button>
+        </div>
+    </section>
+    {% if clubs %}
+    <section class="right-screen" style="position: absolute; top: 160px; right: 100px; width: 42%; margin: 20px, 0; padding: 0; display: inline-block; vertical-align: top;">
+        {% for club in clubs %}
+            {% if forloop.first %}
+            <br><h2>{{ club.signgu_nm }} 동호회 리스트</h2>
+            <p></p>
+            <a href="{% url 'lcl' %}">
+                <button class="more-btn">+</button>
+            </a>
+            {% endif %}
+        {% endfor %}
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>동호회명</th>
+                        <th>시도명</th>
+                        <th>시군구명</th>
+                        <th>종목명</th>
+                        <th>소속그룹명</th>
+                        <th>종목분류명</th>
+                        <th>성별구분명</th>
+                        <th>회원수</th>
+                        <th>설립일자</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for club in clubs|slice:":10" %}
+                    <tr class="club-row" data-sport="{{ club.item_nm }}">
+                        <td>{{ club.club_nm }}</td>
+                        <td>{{ club.ctprvn_nm }}</td>
+                        <td>{{ club.signgu_nm }}</td>
+                        <td>{{ club.item_nm }}</td>
+                        <td>{{ club.afltion_group_nm }}</td>
+                        <td>{{ club.item_cl_nm }}</td>
+                        <td>{{ club.sexdstn_flag_nm }}</td>
+                        <td>{{ club.mber_co|floatformat:0 }}명</td>
+                        <td>{{ club.fond_de }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>    
+    </section>
+
+
+    <section class="right-screen" style="position: absolute; top: 570px; left: 100px; width: 42%; margin: 20px, 0; padding: 0; display: inline-block;">
+        {% for club in clubs %}
+        {% if forloop.first %}
+        <br><h2>{{ club.signgu_nm }} 체육시설</h2>
+        <p></p>
+        <a href="{% url 'sports' %}">
+            <button class="more-btn">+</button>
+        </a>
+        {% endif %}
+        {% endfor %}
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>시설 이름</th>
+                        <th>시설 유형</th>
+                        <th>주소</th>
+                        <th>전화번호</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for facility in facilities|slice:":10" %}
+                    <tr>
+                        <td>{{ facility.facility_name }}</td>
+                        <td>{{ facility.facility_type }}</td>
+                        <td>{{ facility.address }}</td>
+                        <td>{{ facility.phone_number }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+
+    <section class="right-screen" style="position: absolute; top: 570px; right: 100px; width: 42%; margin: 20px, 0; padding: 0; display: inline-block; vertical-align: top;">
+        {% for club in clubs %}
+        {% if forloop.first %}
+        <br><h2>{{ club.signgu_nm }} 게시판</h2>
+        <p></p>
+        <a href="{% url 'board' %}">
+            <button class="more-btn">+</button>
+        </a>
+        {% endif %}
+        {% endfor %}
+    </section>
+    {% endif %}
+    <div style="height: 1100px;"></div>
+
+   
+   {% include 'bottom.html' %}
+</body>
+</html>

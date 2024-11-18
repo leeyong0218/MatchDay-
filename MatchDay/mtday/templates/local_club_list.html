@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/1ab94d0eba.js" crossorigin="anonymous"></script>
+    <title>동호회리스트</title>
+    <link rel="stylesheet" href="{% static 'CSS/style.css' %}">
+    <link rel="stylesheet" href="{% static 'CSS/button.css' %}">
+    
+</head>
+<body>
+    {% include 'menu.html' %}
+    {% if clubs %}
+        <table id="club-table">
+            <thead>
+                <tr>
+                    <th>동호회명</th>
+                    <th>시도명</th>
+                    <th>시군구명</th>
+                    <th>종목명</th>
+                    <th>소속그룹명</th>
+                    <th>종목분류명</th>
+                    <th>성별구분명</th>
+                    <th>회원수</th>
+                    <th>설립일자</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for club in clubs %}
+                <tr class="club-row" data-sport="{{ club.item_nm }}">
+                    <td>{{ club.club_nm }}</td>
+                    <td>{{ club.ctprvn_nm }}</td>
+                    <td>{{ club.signgu_nm }}</td>
+                    <td>{{ club.item_nm }}</td>
+                    <td>{{ club.afltion_group_nm }}</td>
+                    <td>{{ club.item_cl_nm }}</td>
+                    <td>{{ club.sexdstn_flag_nm }}</td>
+                    <td>{{ club.mber_co|floatformat:0 }}명</td>
+                    <td>{{ club.fond_de }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p style="text-align:center;">해당 지역에 동호회 정보가 없습니다.</p>
+    {% endif %}
+</body>
+</html>

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Match Day</title>
+
+    <!-- Bootstrap CSS 연결 (버전 5.3.0) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'CSS/menu.css' %}">
+    <script src="{% static 'JS/region.js' %}"></script>
+
+</head>
+<body style="background-color: #fafafa;">
+    <header>
+        <nav class="navbar navbar-dark fixed-top">
+            <div class="container-fluid">
+                <div class="row w-100 align-items-center">
+                    <!-- 왼쪽: 네비게이션 토글 버튼 -->
+                    <div class="col d-flex align-items-center">
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="toggleNavbar()">
+                            <span class="navbar-toggler-icon">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </span>
+                        </button>
+                    </div>
+
+                    <!-- 가운데: 로고 -->
+                    <div class="col d-flex justify-content-center">
+                        <a class="navbar-brand" href="{% url 'home' %}">
+                            <img src="{% static 'img/matchday_logo.png' %}" alt="Logo">
+                        </a>
+                    </div>
+
+                    <!-- 오른쪽: 검색창, 검색 버튼, 사용자 아이콘 -->
+                    <div class="col d-flex justify-content-end align-items-center">
+                        <!-- 검색창과 검색 버튼 -->
+                        <div class="d-flex align-items-center me-3">
+                            <input class="form-control search-input" type="search" placeholder="Search" style="max-width: 200px; margin-right: 10px;">
+                            <button class="btn btn-outline-light" type="submit" style="max-width: 30px; padding-top: 0;">
+                                <i class="bi bi-search" style="font-size: 1.5rem;"></i>
+                            </button>
+                        </div>
+
+                        <!-- 사용자 아이콘 -->
+                        
+                        {% if request.session.user_id %}
+                        <div class="dropdown">
+                            <a class="navbar-brand" href="#" id="userMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="margin-left: 10px;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                                    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+                                    <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
+                                </svg>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
+                                <li><a class="dropdown-item" href="{% url 'logout' %}">로그아웃</a></li>
+                                <li><a class="dropdown-item" href="{% url 'mypage' %}">마이페이지</a></li>
+                            </ul>
+                        </div>
+                        {% else %}
+                        <a class="navbar-brand" href="{% url 'login' %}" id="userMenu" role="button" style="margin-left: 10px;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                                <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+                                <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
+                            </svg>
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="collapse" id="navbarCollapse">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link">구기 및 팀 스포츠</a>
+                        <ul class="ms-3">
+                            <li style="font-size: 15px;"><a href="#" onclick="filterBySport('축구')">축구</a></li>
+                            <li style="font-size: 15px;"><a href="#" onclick="filterBySport('축구(풋살)')">풋살</a></li>
+                            <li style="font-size: 15px;"><a href="#" onclick="filterBySport('농구')">농구</a></li>
+                            <li style="font-size: 15px;"><a href="#" onclick="filterBySport('배구')">배구</a></li>
+                            <li style="font-size: 15px;"><a href="#" onclick="filterBySport('핸드볼')">핸드볼</a></li>
+                            <li style="font-size: 15px;"><a href="#" onclick="filterBySport('야구소프트볼(야구)')">야구 소프트볼</a></li>
+                            <li style="font-size: 15px;"><a href="#" onclick="filterBySport('야구')">야구</a></li>
+                            <li style="font-size: 15px;"><a href="#" onclick="filterBySport('럭비')">럭비</a></li>
+                            <li style="font-size: 15px;"><a href="#" onclick="filterBySport('하키')">하키</a></li>
+                            <li style="font-size: 15px;"><a href="#" onclick="filterBySport('세팍타크로')">세팍타크로</a></li>
+                            <li style="font-size: 15px;"><a href="#" onclick="filterBySport('족구')">족구</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link">개인 경기 스포츠</a>
+                        <ul class="ms-3">
+                            <li style="font-size: 15px;"><a href="#" onclick="filterBySport('테니스')">테니스</a></li>
+                            <li style="font-size: 15px;"><a href="#" onclick="filterBySport('배드민턴')">배드민턴</a></li>
+                            <li style="font-size: 15px;"><a href="#" onclick="filterBySport('탁구')">탁구</a></li>
+                            <li style="font-size: 15px;"><a href="#" onclick="filterBySport('스쿼시')">스쿼시</a></li>
+                            <li style="font-size: 15px;"><a href="#" onclick="filterBySport('소프트테니스')">소프트테니스</a></li>
+                            <li style="font-size: 15px;"><a href="#" onclick="filterBySport('볼링')">볼링</a></li>
+                            <li style="font-size: 15px;"><a href="#" onclick="filterBySport('골프')">골프</a></li>
+                            <li style="font-size: 15px;"><a href="#" onclick="filterBySport('펜싱')">펜싱</a></li>
+                            <li style="font-size: 15px;"><a href="#" onclick="filterBySport('역도')">역도</a></li>
+                            <li style="font-size: 15px;"><a href="#" onclick="filterBySport('당구')">당구</a></li>
+                            <li style="font-size: 15px;"><a href="#" onclick="filterBySport('궁도')">궁도</a></li>
+                            <li style="font-size: 15px;"><a href="#" onclick="filterBySport('체스')">체스</a></li>
+                            <li style="font-size: 15px;"><a href="#" onclick="filterBySport('바둑')">바둑</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link">수상 및 레저 스포츠</a>
+                        <ul class="ms-3">
+                            <li style="font-size: 15px;"><a href="#" onclick="filterBySport('수영')">수영</a></li>
+                            <li style="font-size: 15px;"><a href="#" onclick="filterBySport('요트')">요트</a></li>
+                            <li style="font-size: 15px;"><a href="#" onclick="filterBySport('카누')">카누</a></li>
+                            <li style="font-size: 15px;"><a href="#" onclick="filterBySport('조정')">조정</a></li>
+                            <li style="font-size: 15px;"><a href="#" onclick="filterBySport('수상스키·웨이크보드')">수상스키·웨이크보드</a></li>
+                            <li style="font-size: 15px;"><a href="#" onclick="filterBySport('수상스키·웨이크스포츠')">웨이크 스포츠</a></li>
+                            <li style="font-size: 15px;"><a href="#" onclick="filterBySport('패러글라이딩')">패러글라이딩</a></li>
+                            <li style="font-size: 15px;"><a href="#" onclick="filterBySport('자전거')">자전거</a></li>
+                            <li style="font-size: 15px;"><a href="#" onclick="filterBySport('산악')">산악</a></li>
+                            <li style="font-size: 15px;"><a href="#" onclick="filterBySport('파크골프')">파크골프</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link">무술 및 격투기</a>
+                        <ul class="ms-3">
+                            <li style="font-size: 15px;"><a href="#" onclick="filterBySport('태권도')">태권도</a></li>
+                            <li style="font-size: 15px;"><a href="#" onclick="filterBySport('합기도')">합기도</a></li>
+                            <li style="font-size: 15px;"><a href="#" onclick="filterBySport('유도')">유도</a></li>
+                            <li style="font-size: 15px;"><a href="#" onclick="filterBySport('복싱')">복싱</a></li>
+                            <li style="font-size: 15px;"><a href="#" onclick="filterBySport('킥복싱')">킥복싱</a></li>
+                            <li style="font-size: 15px;"><a href="#" onclick="filterBySport('주짓수')">주짓수</a></li>
+                            <li style="font-size: 15px;"><a href="#" onclick="filterBySport('씨름')">씨름</a></li>
+                            <li style="font-size: 15px;"><a href="#" onclick="filterBySport('검도')">검도</a></li>
+                            <li style="font-size: 15px;"><a href="#" onclick="filterBySport('우슈')">우슈</a></li>
+                            <li style="font-size: 15px;"><a href="#" onclick="filterBySport('카라테')">카라테</a></li>
+                            <li style="font-size: 15px;"><a href="#" onclick="filterBySport('택견')">택견</a></li>
+                            <li style="font-size: 15px;"><a href="#" onclick="filterBySport('레슬링')">레슬링</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link">체력 및 피트니스</a>
+                        <ul class="ms-3">
+                            <li style="font-size: 15px;"><a href="#" onclick="filterBySport('보디빌딩')">보디빌딩</a></li>
+                            <li style="font-size: 15px;"><a href="#" onclick="filterBySport('에어로빅힙합')">에어로빅힙합</a></li>
+                            <li style="font-size: 15px;"><a href="#" onclick="filterBySport('근대5종')">근대5종</a></li>
+                            <li style="font-size: 15px;"><a href="#" onclick="filterBySport('철인3종')">철인3종</a></li>
+                            <li style="font-size: 15px;"><a href="#" onclick="filterBySport('체조')">체조</a></li>
+                            <li style="font-size: 15px;"><a href="#" onclick="filterBySport('줄넘기')">줄넘기</a></li>
+                            <li style="font-size: 15px;"><a href="#" onclick="filterBySport('댄스스포츠')">댄스스포츠</a></li>
+                            <li style="font-size: 15px;"><a href="#" onclick="filterBySport('치어리딩')">치어리딩</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link">동계 스포츠</a>
+                        <ul class="ms-3">
+                            <li style="font-size: 15px;"><a href="#" onclick="filterBySport('스키')">스키</a></li>
+                            <li style="font-size: 15px;"><a href="#" onclick="filterBySport('빙상')">빙상</a></li>
+                            <li style="font-size: 15px;"><a href="#" onclick="filterBySport('컬링')">컬링</a></li>
+                            <li style="font-size: 15px;"><a href="#" onclick="filterBySport('아이스하키')">아이스하키</a></li>
+                            <li style="font-size: 15px;"><a href="#" onclick="filterBySport('루지')">루지</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // 네비게이션 바가 펼쳐질 때 투명도 적용
+        function toggleNavbar() {
+            var navbar = document.querySelector('.navbar');
+            var navbarCollapse = document.querySelector('.navbar-collapse');
+
+            navbar.classList.toggle('transparent'); // 네비게이션 바 투명화
+
+            if (navbarCollapse.classList.contains('show')) {
+                navbar.classList.remove('transparent'); // 메뉴가 펼쳐지지 않으면 투명도 제거
+            }
+        }
+
+        // 검색 토글 함수
+        function toggleSearch() {
+            var searchContainer = document.getElementById('searchContainer');
+            searchContainer.classList.toggle('show-search');
+        }
+
+        
+    </script>
+</body>
+</html>

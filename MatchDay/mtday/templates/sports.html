@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/1ab94d0eba.js" crossorigin="anonymous"></script>
+    <title>Login Form</title>
+    <link rel="stylesheet" href="{% static 'CSS/style.css' %}">
+    <link rel="stylesheet" href="{% static 'CSS/button.css' %}">
+    
+</head>
+<body>
+    {% include 'menu.html' %}
+    {% if facilities %}
+    <table id="club-table">
+        <thead>
+            <tr>
+                <th>시설 이름</th>
+                <th>시설 유형</th>
+                <th>주소</th>
+                <th>전화번호</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for facility in facilities %}
+            <tr>
+                <td>{{ facility.facility_name }}</td>
+                <td>{{ facility.facility_type }}</td>
+                <td>{{ facility.address }}</td>
+                <td>{{ facility.phone_number }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <p style="text-align:center;">해당 지역에 체육시설 정보가 없습니다.</p>
+    {% endif %}
+    
+</body>
+</html>
